@@ -16,24 +16,34 @@
 
 /* Authors: Darby Lim, Hye-Jong KIM, Ryan Shim, Yong-Ho Na */
 
-#include <ros/ros.h>
-#include <std_msgs/Float64.h>
+#include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/float64.hpp>
 
-ros::Publisher gripper_joint_sub_pub;
-
-void gripperJointCallback(const std_msgs::Float64::ConstPtr& msg)
+class GripperSubPublisher : public rclcpp::Node
 {
-  gripper_joint_sub_pub.publish(msg);
-}
+public:
+  GripperSubPublisher()
+  : Node("gripper_sub_publisher")
+  {
+    gripper_joint_sub_pub_ = this->create_publisher<std_msgs::msg::Float64>("gripper_sub_position/command", 10);
+    gripper_joint_sub_ = this->create_subscription<std_msgs::msg::Float64>(
+      "gripper_position/command", 10, std::bind(&GripperSubPublisher::gripperJointCallback, this, std::placeholders::_1));
+  }
+
+private:
+  void gripperJointCallback(const std_msgs::msg::Float64::SharedPtr msg)
+  {
+    gripper_joint_sub_pub_->publish(msg);
+  }
+
+  rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr gripper_joint_sub_pub_;
+  rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr gripper_joint_sub_;
+};
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "gripper_sub_publisher");
-  ros::NodeHandle node_handle("");
-
-  ros::Subscriber gripper_joint_sub = node_handle.subscribe("gripper_position/command", 10, gripperJointCallback);
-  gripper_joint_sub_pub = node_handle.advertise<std_msgs::Float64>("gripper_sub_position/command", 10);
-
-  ros::spin();
+  rclcpp::init(argc, argv);
+  rclcpp::spin(std::make_shared<GripperSubPublisher>());
+  rclcpp::shutdown();
   return 0;
 }

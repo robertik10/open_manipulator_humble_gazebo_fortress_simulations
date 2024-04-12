@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
-<package format="2">
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>open_manipulator_gazebo</name>
   <version>1.1.1</version>
   <description>
-    Gazebo configurations package for OpenManipulator
+    Gazebo configurations ROS 2 package for OpenManipulator
   </description>
   <license>Apache 2.0</license>
   <author email="thlim@robotis.com">Darby Lim</author>
@@ -15,11 +16,11 @@
   <url type="emanual">http://emanual.robotis.com/docs/en/platform/openmanipulator</url>
   <url type="repository">https://github.com/ROBOTIS-GIT/open_manipulator_simulations</url>
   <url type="bugtracker">https://github.com/ROBOTIS-GIT/open_manipulator_simulations/issues</url>
-  <buildtool_depend>catkin</buildtool_depend>
-  <depend>roscpp</depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
   <depend>std_msgs</depend>
-  <depend>gazebo_ros</depend>
-  <depend>gazebo_ros_control</depend>
+  <depend>gazebo_ros_pkgs</depend>
+  <depend>gazebo_ros2_control</depend>
   <depend>controller_manager</depend>
   <depend>xacro</depend>
   <depend>urdf</depend>
