@@ -1,7 +1,7 @@
 ################################################################################
 # Set minimum required version of cmake, project name and compile options
 ################################################################################
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.5)
 project(open_manipulator_gazebo)
 
 if(NOT CMAKE_CXX_STANDARD)
@@ -18,12 +18,13 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(gazebo_ros_pkgs REQUIRED)
-find_package(gazebo_ros2_control REQUIRED)
+#find_package(gazebo_ros_pkgs REQUIRED)
+find_package(ros_gz REQUIRED)  # ros 2 equivalent of gazebo_ros_pkgs
+# find_package(gazebo_ros2_control REQUIRED)
 find_package(controller_manager REQUIRED)
 find_package(xacro REQUIRED)
 find_package(urdf REQUIRED)
-find_package(gazebo REQUIRED)
+# find_package(gazebo REQUIRED)
 
 ################################################################################
 # Setup for python modules and scripts
@@ -43,8 +44,9 @@ find_package(gazebo REQUIRED)
 ament_export_dependencies(
     rclcpp
     std_msgs
-    gazebo_ros_pkgs
-    gazebo_ros2_control
+    # gazebo_ros_pkgs
+    # gazebo_ros2_control
+    ros_gz
     controller_manager
     xacro
     urdf
@@ -61,7 +63,7 @@ include_directories(
 )
 
 add_executable(omx_gripper_sub_publisher src/omx_gripper_sub_publisher.cpp)
-ament_target_dependencies(omx_gripper_sub_publisher rclcpp std_msgs gazebo_ros_pkgs gazebo_ros2_control controller_manager xacro urdf)
+ament_target_dependencies(omx_gripper_sub_publisher rclcpp std_msgs ros_gz controller_manager xacro urdf) # gazebo_ros_pkgs gazebo_ros2_control
 target_link_libraries(omx_gripper_sub_publisher ${GAZEBO_LIBRARIES})
 
 ################################################################################
@@ -71,7 +73,7 @@ install(TARGETS omx_gripper_sub_publisher
   RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
-install(DIRECTORY config launch worlds
+install(DIRECTORY config launch worlds params
   DESTINATION share/${PROJECT_NAME}
 )
 
@@ -94,4 +96,12 @@ endif()
 # Macro for ament package
 ################################################################################
 ament_export_include_directories(include)
+ament_export_include_directories(rclcpp)
+ament_export_include_directories(std_msgs)
+#ament_export_include_directories(gazebo_ros_pkgs)
+# ament_export_include_directories(gazebo_ros2_control)
+ament_export_include_directories(ros_gz)
+ament_export_include_directories(controller_manager)
+ament_export_include_directories(xacro)
+ament_export_include_directories(urdf)
 ament_package()

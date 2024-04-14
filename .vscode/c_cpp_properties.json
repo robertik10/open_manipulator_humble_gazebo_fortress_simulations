@@ -1,0 +1,32 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/robert/colcon_ws/install/open_manipulator_x_libs/include/**",
+        "/home/robert/colcon_ws/install/robotis_manipulator/include/**",
+        "/home/robert/colcon_ws/install/open_manipulator_msgs/include/**",
+        "/home/robert/colcon_ws/install/dynamixel_workbench_toolbox/include/**",
+        "/home/robert/colcon_ws/install/dynamixel_sdk_custom_interfaces/include/**",
+        "/home/robert/colcon_ws/install/dynamixel_sdk/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/robert/colcon_ws/src/DynamixelSDK/dynamixel_sdk/include/**",
+        "/home/robert/colcon_ws/src/DynamixelSDK/dynamixel_sdk_examples/include/**",
+        "/home/robert/colcon_ws/src/dynamixel-workbench/dynamixel_workbench_toolbox/include/**",
+        "/home/robert/colcon_ws/src/open_manipulator/open_manipulator_x_controller/include/**",
+        "/home/robert/colcon_ws/src/open_manipulator/open_manipulator_x_libs/include/**",
+        "/home/robert/colcon_ws/src/robotis_manipulator/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

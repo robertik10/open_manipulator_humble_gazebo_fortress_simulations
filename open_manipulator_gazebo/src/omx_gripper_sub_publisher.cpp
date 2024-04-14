@@ -33,7 +33,7 @@ public:
 private:
   void gripperJointCallback(const std_msgs::msg::Float64::SharedPtr msg)
   {
-    gripper_joint_sub_pub_->publish(msg);
+    gripper_joint_sub_pub_->publish(*msg);
   }
 
   rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr gripper_joint_sub_pub_;
