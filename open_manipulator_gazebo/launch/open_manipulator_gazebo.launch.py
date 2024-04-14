@@ -6,6 +6,11 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
+bridge_params = os.path.join(
+    get_package_share_directory('open_manipulator_gazebo'),
+    'params',
+    'open_manipulator_bridge.yaml'
+)
 def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -21,7 +26,7 @@ def generate_launch_description():
         #              'models')),
 
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([get_package_share_directory('ros_gz_sim'), '/launch/gz_sim.launch.py']),
+            PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')),
             launch_arguments={
                 'world': get_package_share_directory('open_manipulator_gazebo') + '/worlds/empty.world',
                 'gui': LaunchConfiguration('gui'),
@@ -31,21 +36,18 @@ def generate_launch_description():
         ),
         # Load the URDF into the ROS Parameter Server 
         IncludeLaunchDescription(  #  open_manipulator_upload.launch.py needs to be inserted into launch directory of open_manipulator_x_description
-            PythonLaunchDescriptionSource([get_package_share_directory('open_manipulator_x_description'), '/launch/open_manipulator_upload.launch.py']),
+            PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('open_manipulator_x_description'), 'launch', 'open_manipulator_upload.launch.py')),
         ),
         
         # Load the bridge parameters from the config file
+
         Node(
             package='ros_gz_bridge',
             executable='parameter_bridge',
             arguments=[
                 '--ros-args',
                 '-p',
-                f'config_file:={os.path.join(
-                    get_package_share_directory('open_manipulator_gazebo'),
-                    'params',
-                    'open_manipulator_bridge.yaml'
-                )}',
+                f'config_file:={bridge_params}',
             ],
             output='screen',
         ),
@@ -55,9 +57,9 @@ def generate_launch_description():
             output='screen'
         ),
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([get_package_share_directory('open_manipulator_gazebo'), '/launch/controller_utils.launch.py']),
+            PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('open_manipulator_gazebo'), 'launch', 'controller_utils.launch.py')),
         ),
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([get_package_share_directory('open_manipulator_gazebo'), '/launch/open_manipulator_controller.launch.py']),
+            PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('open_manipulator_gazebo'), 'launch', 'open_manipulator_controller.launch.py')),
         ),
     ])
