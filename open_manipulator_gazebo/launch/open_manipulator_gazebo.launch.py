@@ -29,9 +29,9 @@ def generate_launch_description():
             PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')),
             launch_arguments={
                 'world': get_package_share_directory('open_manipulator_gazebo') + '/worlds/empty.world',
-                'gui': LaunchConfiguration('gui'),
-                'paused': LaunchConfiguration('paused'),
-                'use_sim_time': LaunchConfiguration('use_sim_time'),
+                # 'gui': LaunchConfiguration('gui'),
+                # 'paused': LaunchConfiguration('paused'),
+                # 'use_sim_time': LaunchConfiguration('use_sim_time'),
             }.items(),
         ),
         # Load the URDF into the ROS Parameter Server 
@@ -39,8 +39,14 @@ def generate_launch_description():
             PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('open_manipulator_x_description'), 'launch', 'open_manipulator_upload.launch.py')),
         ),
         
+        # Create the robot model inside the world
+        Node(
+            package='ros_gz_sim', executable='create',  # TODO keep working here
+            arguments=['-entity', 'open_manipulator', '-topic', 'robot_description', '-z', '0.0'],
+            output='screen'
+        ),
+        
         # Load the bridge parameters from the config file
-
         Node(
             package='ros_gz_bridge',
             executable='parameter_bridge',
@@ -50,11 +56,6 @@ def generate_launch_description():
                 f'config_file:={bridge_params}',
             ],
             output='screen',
-        ),
-        Node(
-            package='ros_gz_sim', executable='create',  # TODO keep working here
-            arguments=['-entity', 'open_manipulator', '-topic', 'robot_description', '-z', '0.0'],
-            output='screen'
         ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('open_manipulator_gazebo'), 'launch', 'controller_utils.launch.py')),
