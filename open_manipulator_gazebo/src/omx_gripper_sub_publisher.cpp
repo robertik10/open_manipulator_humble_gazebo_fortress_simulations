@@ -17,7 +17,7 @@
 /* Authors: Darby Lim, Hye-Jong KIM, Ryan Shim, Yong-Ho Na */
 
 #include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/float64.hpp>
+#include <std_msgs/msg/float64_multi_array.hpp>
 
 class GripperSubPublisher : public rclcpp::Node
 {
@@ -25,19 +25,19 @@ public:
   GripperSubPublisher()
   : Node("gripper_sub_publisher")
   {
-    gripper_joint_sub_pub_ = this->create_publisher<std_msgs::msg::Float64>("gripper_sub_position/command", 10);
-    gripper_joint_sub_ = this->create_subscription<std_msgs::msg::Float64>(
-      "gripper_position/command", 10, std::bind(&GripperSubPublisher::gripperJointCallback, this, std::placeholders::_1));
+    gripper_joint_sub_pub_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("gripper_sub_position/commands", 1);
+    gripper_joint_sub_ = this->create_subscription<std_msgs::msg::Float64MultiArray>(
+      "gripper_position/commands", 1, std::bind(&GripperSubPublisher::gripperJointCallback, this, std::placeholders::_1));
   }
 
 private:
-  void gripperJointCallback(const std_msgs::msg::Float64::SharedPtr msg)
+  void gripperJointCallback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
   {
     gripper_joint_sub_pub_->publish(*msg);
   }
 
-  rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr gripper_joint_sub_pub_;
-  rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr gripper_joint_sub_;
+  rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr gripper_joint_sub_pub_;
+  rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr gripper_joint_sub_;
 };
 
 int main(int argc, char **argv)

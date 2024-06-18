@@ -1,19 +1,85 @@
-joint1_position:
+controller_manager:
   ros__parameters:
-    type: position_controllers/JointPositionController
-    joint: joint1
+    update_rate: 1000  # Hz
+    
+    arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
 
-joint2_position:
+arm_controller:
   ros__parameters:
-    type: position_controllers/JointPositionController
-    joint: joint2
+    type: joint_trajectory_controller/JointTrajectoryController
+    joints:
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    # joint1_position:
+    #   type: joint_trajectory_controller/JointTrajectoryController
+    #   # joints:
+    #   #   - joint1
+    #   # interface_name: position1
 
-joint3_position:
-  ros__parameters:
-    type: position_controllers/JointPositionController
-    joint: joint3
+    # joint2_position:
+    #   type: joint_trajectory_controller/JointTrajectoryController
+    #   # joints:
+    #   #   - joint2
+    #   # interface_name: position2
 
-joint4_position:
-  ros__parameters:
-    type: position_controllers/JointPositionController
-    joint: joint4
+    # joint3_position:
+    #   type: joint_trajectory_controller/JointTrajectoryController
+    #   # joints:
+    #   #   - joint3
+    #   # interface_name: position3
+
+    # joint4_position:
+    #   type: joint_trajectory_controller/JointTrajectoryController
+    #   # joints:
+    #   #   - joint4
+    #   # interface_name: position4
+
+# joint1_position:
+#   ros__parameters:
+#     joints:
+#       - joint1
+#     #interface_name: position
+#     command_interfaces:
+#       - position
+#     state_interfaces:
+#       - position
+#       - velocity    
+# joint2_position:
+#   ros__parameters:
+#     joints:
+#       - joint2
+#     #interface_name: position
+#     command_interfaces:
+#       - position
+#     state_interfaces:
+#       - position
+#       - velocity    
+# joint3_position:
+#   ros__parameters:
+#     joints:
+#       - joint3
+#     #interface_name: position
+#     command_interfaces:
+#       - position
+#     state_interfaces:
+#       - position
+#       - velocity    
+# joint4_position:
+#   ros__parameters:
+#     joints:
+#       - joint4
+#     #interface_name: position
+#     command_interfaces:
+#       - position
+#     state_interfaces:
+#       - position
+#       - velocity    
+

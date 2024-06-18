@@ -1,5 +1,5 @@
-<sdf version="1.4">
-  <world name="default">
+<sdf version="1.7">
+  <world name="open_manipulator">
     <!-- A global light source -->
     <include>
       <uri>model://sun</uri>
