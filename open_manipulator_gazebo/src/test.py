@@ -40,14 +40,14 @@ class JointCommandPublisher(Node):
         #     self.check_gripper_2(False)
         #     time.sleep(1)        
         for i in range(1000):
-            self.trajectory_test([[1.0, 0.0, 1.0, 0.0]])
+            self.trajectory_test([[2.0, 0.0, 0.0, 0.0]])
             self.check_gripper_2(True)
             print("Trajectory test sent")
-            time.sleep(10)
+            time.sleep(5)
             self.trajectory_test([[0.0, 0.0, 0.0, 0.0]])
             self.check_gripper_2(False)
             print("Trajectory test sent")
-            time.sleep(10)
+            time.sleep(5)
         # self.trajectory_test([[0.0, 0.0, 0.0, 0.0]])
         #self.check_gripper([0])
     def check_gripper_2(self, gripper_state):
@@ -142,7 +142,7 @@ class JointCommandPublisher(Node):
         # Create a JointTrajectoryPoint message for the first point on the trajectory
         point1 = JointTrajectoryPoint()
         point1.positions = joint_rad_positions[0]  # Use the first set of positions from joint_rad_positions
-        #point1.time_from_start = rclpy.time.Duration(seconds=1.0)
+        
         point1.time_from_start = Duration(sec=1, nanosec=0)
 
         point1.accelerations = [max_acc, max_acc, max_acc, max_acc]

@@ -18,6 +18,16 @@ arm_controller:
     state_interfaces:
       - position
       - velocity
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      joint1:
+        goal: 0.01        # Lower tolerance for better accuracy
+      joint2:
+          goal: 0.01
+      joint3:
+        goal: 0.01
+      joint4:
+        goal: 0.01
     # joint1_position:
     #   type: joint_trajectory_controller/JointTrajectoryController
     #   # joints:

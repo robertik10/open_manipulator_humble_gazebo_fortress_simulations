@@ -6,6 +6,7 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
+# Arguments for launch description
 ARGUMENTS = [DeclareLaunchArgument(
             'gui', default_value='true', description='Start Gazebo UI?'),
             DeclareLaunchArgument(
@@ -81,7 +82,7 @@ def generate_launch_description():
         
         # Create the robot model inside the world
         Node(
-            package='ros_gz_sim', executable='create',  # TODO keep working here
+            package='ros_gz_sim', executable='create',
             arguments=['-entity', 'open_manipulator', '-topic', 'robot_description', '-z', '0.0'],
             output='screen',
         ),
