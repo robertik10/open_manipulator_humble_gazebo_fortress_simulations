@@ -19,7 +19,7 @@ arm_controller:
       - position
       - velocity
     constraints:
-      stopped_velocity_tolerance: 0.01
+      #stopped_velocity_tolerance: 0.01
       joint1:
         goal: 0.01        # Lower tolerance for better accuracy
       joint2:
