@@ -16,6 +16,7 @@ endif()
 # Find ament packages and libraries for ament and system dependencies
 ################################################################################
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 #find_package(gazebo_ros_pkgs REQUIRED)
@@ -24,11 +25,23 @@ find_package(ros_gz REQUIRED)  # ros 2 equivalent of gazebo_ros_pkgs
 find_package(controller_manager REQUIRED)
 find_package(xacro REQUIRED)
 find_package(urdf REQUIRED)
+find_package(Python3 REQUIRED)
 # find_package(gazebo REQUIRED)
 
 ################################################################################
 # Setup for python modules and scripts
 ################################################################################
+ament_python_install_package(src)
+
+install(PROGRAMS
+  src/end_effector_pos_publisher.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(
+  DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}/
+)
 
 ################################################################################
 # Declare ROS messages, services and actions
@@ -76,7 +89,6 @@ install(TARGETS omx_gripper_sub_publisher
 install(DIRECTORY config launch worlds params
   DESTINATION share/${PROJECT_NAME}
 )
-
 ################################################################################
 # Test
 ################################################################################

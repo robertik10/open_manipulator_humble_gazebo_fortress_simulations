@@ -99,7 +99,7 @@ class BotController(Node):
         while not all(math.isclose(velocity, 0.0, abs_tol=1e-3) for velocity in self.joint_velocities[0:4]):
             time.sleep(0.1)
 
-    def check_joint_limits(joint_rad_positions):
+    def check_joint_limits(self,joint_rad_positions):
         if joint_rad_positions[0] < JOINT_1_LIMITS[0] or joint_rad_positions[0] > JOINT_1_LIMITS[1] :
             print("Error: Joint 1 out of limits")
             return False

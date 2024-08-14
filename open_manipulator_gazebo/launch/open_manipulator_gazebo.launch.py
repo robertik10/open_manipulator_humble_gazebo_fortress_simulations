@@ -6,6 +6,13 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
+
+
+# Directories:
+pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
+pkg_open_manipulator_x_description = get_package_share_directory('open_manipulator_x_description')
+pkg_open_manipulator_gazebo = get_package_share_directory('open_manipulator_gazebo')
+
 # Arguments for launch description
 ARGUMENTS = [DeclareLaunchArgument(
             'gui', default_value='true', description='Start Gazebo UI?'),
@@ -14,15 +21,24 @@ ARGUMENTS = [DeclareLaunchArgument(
             DeclareLaunchArgument(
             'use_sim_time', default_value='true', description='Use simulation time (if true, /clock is published)'),
             DeclareLaunchArgument(
-            'world', default_value='empty', description='default SDF world file'),
-        ]
+                'world',
+                default_value=os.path.join(
+                        pkg_open_manipulator_gazebo,
+                        'worlds',
+                        'empty'),
+                description='default SDF world file'),
+            # DeclareLaunchArgument(
+            #     'world',
+            #     default_value='empty',
+            #     description='default SDF world file'),
+            ]
 
 def generate_launch_description():
 
     # Directories:
-    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
-    pkg_open_manipulator_x_description = get_package_share_directory('open_manipulator_x_description')
-    pkg_open_manipulator_gazebo = get_package_share_directory('open_manipulator_gazebo')
+    # pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
+    # pkg_open_manipulator_x_description = get_package_share_directory('open_manipulator_x_description')
+    # pkg_open_manipulator_gazebo = get_package_share_directory('open_manipulator_gazebo')
     # pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
 
     print(pkg_ros_gz_sim)
@@ -87,10 +103,10 @@ def generate_launch_description():
             output='screen',
         ),
 
-        # IncludeLaunchDescription(
-        #     PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('pkg_open_manipulator_gazebo'),
-        #                                                'launch', 'controller_utils.launch.py')),
-        # ),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(os.path.join(pkg_open_manipulator_gazebo,
+                                                       'launch', 'controller_utils.launch.py')),
+        ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(pkg_open_manipulator_gazebo,
                                                        'launch',

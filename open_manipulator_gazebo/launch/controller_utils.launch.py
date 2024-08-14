@@ -37,21 +37,26 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     # Get the path to the joint_state_controller.yaml file
-    open_manipulator_gazebo_dir = get_package_share_directory('open_manipulator_gazebo')
-    joint_state_controller_config = os.path.join(open_manipulator_gazebo_dir, 'config', 'joint_state_controller.yaml')
+    #open_manipulator_gazebo_dir = get_package_share_directory('open_manipulator_gazebo')
+    #joint_state_controller_config = os.path.join(open_manipulator_gazebo_dir, 'config', 'joint_state_controller.yaml')
 
     return LaunchDescription([
+        # Node(
+        #     package='controller_manager',
+        #     executable='ros2_control_node',
+        #     parameters=[joint_state_controller_config],
+        #     output='screen',
+        #     name='controller_manager',
+        # ),
+        # Node(
+        #     package='controller_manager',
+        #     executable='spawner',
+        #     arguments=['joint_state_controller'],
+        #     output='screen',
+        # ),
         Node(
-            package='controller_manager',
-            executable='ros2_control_node',
-            parameters=[joint_state_controller_config],
-            output='screen',
-            name='controller_manager',
-        ),
-        Node(
-            package='controller_manager',
-            executable='spawner',
-            arguments=['joint_state_controller'],
+            package='open_manipulator_gazebo',
+            executable='end_effector_pos_publisher.py',
             output='screen',
         ),
     ])
