@@ -2,6 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
+import rclpy.time
 from std_msgs.msg import Float64MultiArray
 import time
 import threading
@@ -52,8 +53,8 @@ class BotController(Node):
         self.gripper_publisher_.publish(msg)   
 
     def set_joint_rad(self, joints_rad_position):
-        if not self.check_joint_limits(joints_rad_position):
-            return 
+        # if not self.check_joint_limits(joints_rad_position):
+        #     return 
 
         # Create a JointTrajectory message
         trajectory = JointTrajectory()
@@ -96,8 +97,9 @@ class BotController(Node):
         return self.gripper_open
 
     def wait_action_finished(self):
-        while not all(math.isclose(velocity, 0.0, abs_tol=1e-3) for velocity in self.joint_velocities[0:4]):
-            time.sleep(0.1)
+        time.sleep(3)
+        while not all(math.isclose(velocity, 0.0, abs_tol=1e-8) for velocity in self.joint_velocities[0:4]):
+            time.sleep(0.5)
 
     def check_joint_limits(self,joint_rad_positions):
         if joint_rad_positions[0] < JOINT_1_LIMITS[0] or joint_rad_positions[0] > JOINT_1_LIMITS[1] :
@@ -137,7 +139,7 @@ def main(args=None):
 
     # Your Code Here: 
     for i in range(1000):
-        bot_controller.set_joint_rad([2.0, 0.0, 0.0, 0.0])
+        bot_controller.set_joint_rad([0.0, 2.451593088341385, -2.2971272551318895, -0.15446583320949525])
         bot_controller.open_gripper(True)
         print("Trajectory test sent")
         bot_controller.wait_action_finished()
