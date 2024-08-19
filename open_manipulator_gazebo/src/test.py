@@ -27,8 +27,8 @@ class BotController(Node):
     def __init__(self):
         super().__init__('bot_controller')
 
-        self.joint_positions = [0.0, 0.0, 0.0, 0.0] # [joint1, joint2, joint3, joint4]
-        self.joint_velocities = [0.0, 0.0, 0.0, 0.0] # [joint1, joint2, joint3, joint4]
+        self.joint_positions = [0.0, 0.0, 0.0, 0.0, 0.0] # [joint1, joint2, joint3, joint4]
+        self.joint_velocities = [0.0, 0.0, 0.0, 0.0, 0.0] # [joint1, joint2, joint3, joint4]
         self.gripper_open = False
 
         self.endeffector_position = [0.0, 0.0, 0.0]
@@ -37,7 +37,7 @@ class BotController(Node):
         self.joint_position_pub = self.create_publisher(JointTrajectory, '/arm_controller/joint_trajectory', 1)
         self.joint_state_sub = None
 
-    # run method starts the subscriber (infinite loop until node is stopped)
+    # run method starts the subscriber (until node is stopped)
     def run(self):
         self.joint_state_sub = self.create_subscription(JointState, '/joint_states', self.joint_state_callback, 1)
         rclpy.spin(self)
