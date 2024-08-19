@@ -4,9 +4,11 @@ import rclpy
 from rclpy.node import Node
 import numpy as np
 from std_msgs.msg import Float32MultiArray
+from geometry_msgs.msg import Pose
 from sensor_msgs.msg import JointState
+from geometry_msgs.msg import PoseArray
 
-JOINT_NAMES = ["joint1", "joint2", "joint3", "joint4", "gripper", "gripper_sub"]
+JOINT_NAMES = ["joint1", "joint2", "joint3", "joint4", "gripper", "gripper_sub", "end_effector_joint"]
 D1 = 0.077
 THETA0 = 11  # Offset angle from the table
 A2, A3, A4 = 0.130, 0.135, 0.126
@@ -15,17 +17,27 @@ class EEPosPublisher(Node):
     def __init__(self):
         super().__init__('end_effector_pos_publisher')
         
-        self.ee_pos_publisher = self.create_publisher(Float32MultiArray, 'end_effector_pos', 10)
-        self.joint_state_sub = self.create_subscription(JointState, '/joint_states', self.pos_publisher, 1)
-
+        #self.ee_pos_publisher = self.create_publisher(Float32MultiArray, 'end_effector_pos', 10)
+        self.dirty_ee_pos_publisher = self.create_publisher(Pose, 'end_effector_pose', 10)
+        #self.joint_state_sub = self.create_subscription(JointState, '/joint_states', self.pos_publisher, 1)
+        self.open_manipulator_pose_sub = self.create_subscription(PoseArray, 'open_manipulator_poses', self.pos_publisher_dirty, 1)
+        
+        
         # Test
-        self.inverse_kinematics_test_pub = self.create_publisher(Float32MultiArray, 'inverse_kinematics_test', 10)
+        #self.inverse_kinematics_test_pub = self.create_publisher(Float32MultiArray, 'inverse_kinematics_test', 10)
 
-        ee_pos = [0.24, 0.0, 0.205] # initial end effector position
-        joints = inverse_kinematics(ee_pos, ee_ori=0)
-        while True:
-            print(joints)
+        # ee_pos = [0.24, 0.0, 0.205] # initial end effector position
+        # joints = inverse_kinematics(ee_pos, ee_ori=0)
+        # while True:
+        #     print(joints)
 
+    def pos_publisher_dirty(self, msg):
+        # publish the ee_pose each time a PoseArray message is received
+        ee_pose = Pose()
+        ee_pose.position = msg.poses[10].position
+        ee_pose.orientation = msg.poses[10].orientation
+
+        self.dirty_ee_pos_publisher.publish(ee_pose)
 
     # publish the ee position each time a joint state message is received
     def pos_publisher(self, msg):
@@ -44,8 +56,9 @@ class EEPosPublisher(Node):
 
         pass
 
-
+#TODO
 def inverse_kinematics(ee_pos, ee_ori=0):
+    # doesnt seem to work
     # caluclations according to:
     # https://www.researchgate.net/publication/353075915_Kinematic_Analysis_for_Trajectory_Planning_of_Open-Source_4-DoF_Robot_Arm#pf3
 
@@ -87,7 +100,10 @@ def inverse_kinematics(ee_pos, ee_ori=0):
 
     return (theta1, theta2, theta3, theta4)
 
+#TODO
 def forward_kinematics(joint_positions):
+    # expects 4 joint positions in radians
+    # TODO Doesnt seem to work yet
     theta1, theta2, theta3, theta4 = joint_positions
 
     # DH parameters: (theta, d, a, alpha)

@@ -1,5 +1,3 @@
-# !!!!CHANGE WHOLE FILE TO FIT OPENMANIPULATOR SIMULATION!!!
-# !!!CURRENTLY COPIED FROM TURTLEBOT3!!!
 # gz topic published by the simulator core
 - ros_topic_name: "clock"
   gz_topic_name: "clock"
@@ -14,40 +12,47 @@
   gz_type_name: "ignition.msgs.Model"
   direction: GZ_TO_ROS
 
-# gz topic published by DiffDrive plugin
-- ros_topic_name: "odom"
-  gz_topic_name: "odom"
-  ros_type_name: "nav_msgs/msg/Odometry"
-  gz_type_name: "ignition.msgs.Odometry"
-  direction: GZ_TO_ROS
-
-# gz topic published by DiffDrive plugin
-- ros_topic_name: "tf"
-  gz_topic_name: "tf"
-  ros_type_name: "tf2_msgs/msg/TFMessage"
+# Bridge configuration for end-effector pose
+- ros_topic_name: "open_manipulator_poses"
+  gz_topic_name: "/world/open_manipulator/pose/info"
+  ros_type_name: "geometry_msgs/msg/PoseArray"
   gz_type_name: "ignition.msgs.Pose_V"
   direction: GZ_TO_ROS
 
+# gz topic published by DiffDrive plugin
+# - ros_topic_name: "odom"
+#   gz_topic_name: "odom"
+#   ros_type_name: "nav_msgs/msg/Odometry"
+#   gz_type_name: "ignition.msgs.Odometry"
+#   direction: GZ_TO_ROS
+
+# gz topic published by DiffDrive plugin
+# - ros_topic_name: "tf"
+#   gz_topic_name: "tf"
+#   ros_type_name: "tf2_msgs/msg/TFMessage"
+#   gz_type_name: "ignition.msgs.Pose_V"
+#   direction: GZ_TO_ROS
+
 # gz topic subscribed to by DiffDrive plugin
-- ros_topic_name: "cmd_vel"
-  gz_topic_name: "cmd_vel"
-  ros_type_name: "geometry_msgs/msg/Twist"
-  gz_type_name: "ignition.msgs.Twist"
-  direction: ROS_TO_GZ
+# - ros_topic_name: "cmd_vel"
+#   gz_topic_name: "cmd_vel"
+#   ros_type_name: "geometry_msgs/msg/Twist"
+#   gz_type_name: "ignition.msgs.Twist"
+#   direction: ROS_TO_GZ
 
 # gz topic published by IMU plugin
-- ros_topic_name: "imu"
-  gz_topic_name: "imu"
-  ros_type_name: "sensor_msgs/msg/Imu"
-  gz_type_name: "ignition.msgs.IMU"
-  direction: GZ_TO_ROS
+# - ros_topic_name: "imu"
+#   gz_topic_name: "imu"
+#   ros_type_name: "sensor_msgs/msg/Imu"
+#   gz_type_name: "ignition.msgs.IMU"
+#   direction: GZ_TO_ROS
 
 # gz topic published by Sensors plugin
-- ros_topic_name: "scan"
-  gz_topic_name: "scan"
-  ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "ignition.msgs.LaserScan"
-  direction: GZ_TO_ROS
+# - ros_topic_name: "scan"
+#   gz_topic_name: "scan"
+#   ros_type_name: "sensor_msgs/msg/LaserScan"
+#   gz_type_name: "ignition.msgs.LaserScan"
+#   direction: GZ_TO_ROS
 
 # gz topic published by Sensors plugin (Camera)
 - ros_topic_name: "camera/camera_info"

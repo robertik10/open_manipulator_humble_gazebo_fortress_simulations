@@ -13,7 +13,7 @@ from builtin_interfaces.msg import Duration
 
 GRIPPER_OPEN_CONSTANT = 0.01
 GRIPPER_CLOSED_CONSTANT = -0.01
-DEFAULT_PATH_TIME_CONSTANT = 0.05 # was 0.05
+#DEFAULT_PATH_TIME_CONSTANT = 0.05 # was 0.05
 DEFAULT_MAX_ACC_CONSTANT = 0.1 # was 0.1
 DEFAULT_MAX_VEL_CONSTANT = 0.1 # was 0.1
 DEFAULT_PLANNING_GROUP_CONSTANT = "arm"
@@ -62,15 +62,15 @@ class BotController(Node):
         max_vel=DEFAULT_MAX_VEL_CONSTANT
 
         # Set the joint names
-        trajectory.joint_names = ["joint1", "joint2", "joint3", "joint4"]
+        trajectory.joint_names = ["joint1", "joint2", "joint3", "joint4", "end_effector_joint"]
         
 
         # Create a JointTrajectoryPoint message for the goal point on the trajectory
         goal_point = JointTrajectoryPoint()
-        goal_point.positions = joints_rad_position
+        goal_point.positions = joints_rad_position + [0.0]
         goal_point.time_from_start = Duration(sec=1, nanosec=0)
-        goal_point.accelerations = [max_acc, max_acc, max_acc, max_acc]
-        goal_point.velocities = [max_vel, max_vel, max_vel, max_vel]
+        goal_point.accelerations = [max_acc, max_acc, max_acc, max_acc, max_acc]
+        goal_point.velocities = [max_vel, max_vel, max_vel, max_vel, max_vel]
 
         # Add the goal point to the trajectory
         trajectory.points.append(goal_point)
@@ -98,8 +98,8 @@ class BotController(Node):
 
     def wait_action_finished(self):
         time.sleep(3)
-        while not all(math.isclose(velocity, 0.0, abs_tol=1e-8) for velocity in self.joint_velocities[0:4]):
-            time.sleep(0.5)
+        # while not all(math.isclose(velocity, 0.0, abs_tol=1e-8) for velocity in self.joint_velocities[0:4]):
+        #     time.sleep(0.5)
 
     def check_joint_limits(self,joint_rad_positions):
         if joint_rad_positions[0] < JOINT_1_LIMITS[0] or joint_rad_positions[0] > JOINT_1_LIMITS[1] :
@@ -139,14 +139,14 @@ def main(args=None):
 
     # Your Code Here: 
     for i in range(1000):
-        bot_controller.set_joint_rad([0.0, 2.451593088341385, -2.2971272551318895, -0.15446583320949525])
+        bot_controller.set_joint_rad([0.0, 0.0, 0.0, 0.0])
         bot_controller.open_gripper(True)
         print("Trajectory test sent")
         bot_controller.wait_action_finished()
         print(bot_controller.get_joints_position())
         print(bot_controller.get_gripper_state())
         time.sleep(5)
-        bot_controller.set_joint_rad([0.0, 0.0, 0.0, 0.0])
+        bot_controller.set_joint_rad([2.0, 0.0, 0.0, 0.0])
         bot_controller.open_gripper(False)
         print("Trajectory test sent")
         bot_controller.wait_action_finished()
