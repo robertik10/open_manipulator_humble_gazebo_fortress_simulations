@@ -54,11 +54,11 @@
       <pose>0.3 0 0.025 0 0 0</pose>  <!-- Position it on the ground -->
       <link name="link">
         <inertial>
-          <mass>1.0</mass>
+          <mass>0.001</mass>
           <inertia>
-            <ixx>0.0001</ixx>
-            <iyy>0.0001</iyy>
-            <izz>0.0001</izz>
+            <ixx>0.000001</ixx>
+            <iyy>0.000001</iyy>
+            <izz>0.000001</izz>
           </inertia>
         </inertial>
         <collision name="collision">
@@ -67,6 +67,14 @@
               <size>0.05 0.05 0.05</size>
             </box>
           </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
         </collision>
         <visual name="visual">
           <geometry>

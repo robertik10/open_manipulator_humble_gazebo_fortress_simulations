@@ -13,10 +13,8 @@ from builtin_interfaces.msg import Duration
 
 GRIPPER_OPEN_CONSTANT = 0.01
 GRIPPER_CLOSED_CONSTANT = -0.01
-#DEFAULT_PATH_TIME_CONSTANT = 0.05 # was 0.05
 DEFAULT_MAX_ACC_CONSTANT = 0.1 # was 0.1
 DEFAULT_MAX_VEL_CONSTANT = 0.1 # was 0.1
-#DEFAULT_PLANNING_GROUP_CONSTANT = "arm"
 JOINT_NAMES = ["joint1", "joint2", "joint3", "joint4", "gripper", "gripper_sub", "end_effector_joint"]
 JOINT_1_LIMITS = [-3.142, 3.142] # ["MIN", "MAX"]
 JOINT_2_LIMITS = [-2.050, 1.571] # ["MIN", "MAX"]
@@ -140,22 +138,31 @@ def main(args=None):
     time.sleep(1)
 
     # Your Code Here: 
-    for i in range(1000):
-        bot_controller.set_joint_rad([0.0, 0.0, 0.0, 0.0])
-        bot_controller.open_gripper(True)
-        print("Trajectory test sent")
-        bot_controller.wait_action_finished()
-        print("Current Joint positions: ", bot_controller.get_joints_position())
-        print("Current Gripper Open State: ", bot_controller.get_gripper_state())
-        time.sleep(5)
-        bot_controller.set_joint_rad([2.0, 0.0, 0.0, 0.0])
-        bot_controller.open_gripper(False)
-        print("Trajectory test sent")
-        bot_controller.wait_action_finished()
-        print("Current Joint positions: ", bot_controller.get_joints_position())
-        print("Current Gripper Open State: ", bot_controller.get_gripper_state())
-        time.sleep(5)
-    
+    # for i in range(1000):
+    #     bot_controller.set_joint_rad([0.0, 0.0, 0.0, 0.0])
+    #     bot_controller.open_gripper(True)
+    #     print("Trajectory test sent")
+    #     bot_controller.wait_action_finished()
+    #     print("Current Joint positions: ", bot_controller.get_joints_position())
+    #     print("Current Gripper Open State: ", bot_controller.get_gripper_state())
+    #     time.sleep(5)
+    #     bot_controller.set_joint_rad([2.0, 0.0, 0.0, 0.0])
+    #     bot_controller.open_gripper(False)
+    #     print("Trajectory test sent")
+    #     bot_controller.wait_action_finished()
+    #     print("Current Joint positions: ", bot_controller.get_joints_position())
+    #     print("Current Gripper Open State: ", bot_controller.get_gripper_state())
+    #     time.sleep(5)
+    bot_controller.open_gripper(True)
+    bot_controller.set_joint_rad([0.0, 0.0, 0.0, 0.0])
+    bot_controller.wait_action_finished()
+    bot_controller.open_gripper(True)
+    bot_controller.set_joint_rad([0.0, 0.6, 0.498, -1.02])
+    bot_controller.wait_action_finished()
+    bot_controller.open_gripper(False)
+    bot_controller.set_joint_rad([0.0, 0.0, 0.0, 0.0])
+    bot_controller.wait_action_finished()
+
     # Destroy the node at the end of the program
     rclpy.shutdown()
 

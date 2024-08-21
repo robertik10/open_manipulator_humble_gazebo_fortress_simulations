@@ -25,8 +25,10 @@ class EEPosPublisher(Node):
         
         #self.ee_pos_publisher = self.create_publisher(Float32MultiArray, 'end_effector_pos', 10)
         self.dirty_ee_pos_publisher = self.create_publisher(Pose, 'end_effector_pose', 10)
+        self.dirty_cube_pos_publisher = self.create_publisher(Pose, 'cube_pose', 10)
         #self.joint_state_sub = self.create_subscription(JointState, '/joint_states', self.pos_publisher, 1)
-        self.open_manipulator_pose_sub = self.create_subscription(PoseArray, 'open_manipulator_poses', self.pos_publisher_dirty, 1)
+        self.open_manipulator_pose_sub = self.create_subscription(PoseArray, 'open_manipulator_poses', self.open_manipulator_pose_callback, 1)
+
         
         
         # Test
@@ -51,13 +53,21 @@ class EEPosPublisher(Node):
         # while True:
         #     print("ee_pos: ", ee_pos)
 
-    def pos_publisher_dirty(self, msg):
+    def open_manipulator_pose_callback(self, msg):
         # publish the ee_pose each time a PoseArray message is received
         ee_pose = Pose()
+        cube_pose = Pose()
+        if len(msg.poses) < 11:
+            #print("Error: Not enough poses in PoseArray message -> No end effector pose")
+            return
         ee_pose.position = msg.poses[10].position
         ee_pose.orientation = msg.poses[10].orientation
 
+        cube_pose.position = msg.poses[1].position
+        cube_pose.orientation = msg.poses[1].orientation
+
         self.dirty_ee_pos_publisher.publish(ee_pose)
+        self.dirty_cube_pos_publisher.publish(cube_pose)
 
     # publish the ee position each time a joint state message is received
     def pos_publisher(self, msg):
